@@ -3,9 +3,11 @@ const GitHubApi = require('github')
 const fs = require('fs');
 
 const requiredVersion = process.env.REQUIRED_VERSION || 'v1.0';
-const packageVersion = process.env.TRAVIS_BUILD_NUMBER ?
-    requiredVersion + '.' + process.env.TRAVIS_BUILD_NUMBER :
-    require('./package.json').version
+// const packageVersion = process.env.TRAVIS_BUILD_NUMBER ?
+//     requiredVersion + '.' + process.env.TRAVIS_BUILD_NUMBER :
+//     require('./package.json').version
+const packageVersion = require('./package.json').version;
+
 const HKUBE = 'Kube-HPC'
 const CORE_TOPIC = 'hkube-core'
 const COMMON_TOPIC = 'hkube-common'
@@ -91,12 +93,6 @@ const main = async () => {
                     date: new Date()
                 }
             })
-            // const tagRefResponse = await github.gitdata.createReference({
-            //     owner:HKUBE,
-            //     repo:RELEASE_MANAGER_REPO,
-            //     ref:'refs/tags/'+tagResponse.data.tag,
-            //     sha: tagResponse.data.sha
-            // })
             const tagRefResponse = await github.repos.createRelease({
                 owner: HKUBE,
                 repo: RELEASE_MANAGER_REPO,
