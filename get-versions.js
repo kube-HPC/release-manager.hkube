@@ -2,8 +2,6 @@ const repoList = require('./repos')
 const GitHubApi = require('github')
 const fs = require('fs');
 
-
-
 const requiredVersion = process.env.REQUIRED_VERSION || 'v1.0';
 const packageVersion = process.env.TRAVIS_BUILD_NUMBER ?
     requiredVersion + '.' + process.env.TRAVIS_BUILD_NUMBER :
@@ -115,7 +113,6 @@ const main = async () => {
                 name: 'version.json',
                 label: 'Version Description'
             })
-            console.log(tagRefResponse)
         }
     }
     catch (e) {
