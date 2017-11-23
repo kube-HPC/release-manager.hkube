@@ -1,0 +1,24 @@
+{
+  "name": "release-manager.hkube",
+  "version": "1.0.0",
+  "description": "handles system wide versions and releases to cluster",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kube-HPC/release-manager.hkube.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kube-HPC/release-manager.hkube/issues"
+  },
+  "homepage": "https://github.com/kube-HPC/release-manager.hkube#readme",
+  "dependencies": {
+    "github": "^12.0.5",
+    "github-repositories": "^3.0.0"
+  }
+}
