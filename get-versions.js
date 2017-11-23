@@ -11,12 +11,12 @@ const packageVersion = process.env.TRAVIS_BUILD_NUMBER ?
 const HKUBE = 'Kube-HPC'
 const CORE_TOPIC = 'hkube-core'
 const COMMON_TOPIC = 'hkube-common'
-const RELEASE_MANAGER_REPO='release-manager'
+const RELEASE_MANAGER_REPO = 'release-manager'
 
 const main = async () => {
     try {
         const github = new GitHubApi({
-            //    debug:true,
+            // debug: true,
             headers: {
                 'Accept': ' application/vnd.github.mercy-preview+json'
             }
@@ -75,25 +75,47 @@ const main = async () => {
         fs.writeFileSync('version.json', JSON.stringify(output, null, 2))
         console.log(JSON.stringify(output, null, 2))
         const masterRef = await github.gitdata.getReference({
-            owner:HKUBE,
-            repo:RELEASE_MANAGER_REPO,
-            ref:'heads/master'            
+            owner: HKUBE,
+            repo: RELEASE_MANAGER_REPO,
+            ref: 'heads/master'
         });
-        if (masterRef.data && masterRef.data.object){
+        if (masterRef.data && masterRef.data.object) {
             const tagResponse = await github.gitdata.createTag({
-                owner:HKUBE,
-                repo:RELEASE_MANAGER_REPO,
-                tag:packageVersion,
-                message:JSON.stringify(output, null, 2),
-                object:masterRef.data.object.sha,
-                type:'commit',
-                tagger:{
-                    name:'Travis CI',
-                    email:'travis@travis-ci.org',
-                    date:new Date()
+                owner: HKUBE,
+                repo: RELEASE_MANAGER_REPO,
+                tag: packageVersion,
+                message: 'version ' + packageVersion,
+                object: masterRef.data.object.sha,
+                type: 'commit',
+                tagger: {
+                    name: 'Travis CI',
+                    email: 'travis@travis-ci.org',
+                    date: new Date()
                 }
             })
-            console.log(tagResponse)
+            // const tagRefResponse = await github.gitdata.createReference({
+            //     owner:HKUBE,
+            //     repo:RELEASE_MANAGER_REPO,
+            //     ref:'refs/tags/'+tagResponse.data.tag,
+            //     sha: tagResponse.data.sha
+            // })
+            const tagRefResponse = await github.repos.createRelease({
+                owner: HKUBE,
+                repo: RELEASE_MANAGER_REPO,
+                tag_name: packageVersion,
+                name: packageVersion,
+                body: JSON.stringify(output, null, 2),
+                prerelease: true
+            })
+            const uploadRes = await github.repos.uploadAsset({
+                owner: HKUBE,
+                repo: RELEASE_MANAGER_REPO,
+                id: tagRefResponse.data.id,
+                filePath: './version.json',
+                name: 'version.json',
+                label: 'Version Description'
+            })
+            console.log(tagRefResponse)
         }
     }
     catch (e) {
