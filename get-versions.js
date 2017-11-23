@@ -98,7 +98,7 @@ const main = async () => {
                 repo: RELEASE_MANAGER_REPO,
                 tag_name: packageVersion,
                 name: packageVersion,
-                body: JSON.stringify(output, null, 2),
+                // body: JSON.stringify(output, null, 2),
                 prerelease: true
             })
             const uploadRes = await github.repos.uploadAsset({
