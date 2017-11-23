@@ -11,6 +11,7 @@ const packageVersion = process.env.TRAVIS_BUILD_NUMBER ?
 const HKUBE = 'Kube-HPC'
 const CORE_TOPIC = 'hkube-core'
 const COMMON_TOPIC = 'hkube-common'
+const RELEASE_MANAGER_REPO='release-manager'
 
 const main = async () => {
     try {
@@ -73,6 +74,27 @@ const main = async () => {
         }
         fs.writeFileSync('version.json', JSON.stringify(output, null, 2))
         console.log(JSON.stringify(output, null, 2))
+        const masterRef = await github.gitdata.getReference({
+            owner:HKUBE,
+            repo:RELEASE_MANAGER_REPO,
+            ref:'heads/master'            
+        });
+        if (masterRef.data && masterRef.data.object){
+            const tagResponse = await github.gitdata.createTag({
+                owner:HKUBE,
+                repo:RELEASE_MANAGER_REPO,
+                tag:packageVersion,
+                message:JSON.stringify(output, null, 2),
+                object:masterRef.data.object.sha,
+                type:'commit',
+                tagger:{
+                    name:'Travis CI',
+                    email:'travis@travis-ci.org',
+                    date:new Date()
+                }
+            })
+            console.log(tagResponse)
+        }
     }
     catch (e) {
         console.error(e)

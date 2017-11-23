@@ -10,6 +10,9 @@
             "name": "Launch Program",
             "program": "${workspaceFolder}/get-versions.js",
             "env":{
+                "GH_TOKEN":"f1f63091b04c827cfbd83944a3054e9231dec6ac",
+                "TRAVIS_BUILD_NUMBER":"4",
+                "CREATE_TAG":"true"
             }
         }
     ]
