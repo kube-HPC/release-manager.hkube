@@ -11,7 +11,7 @@ install:
   - git config --global user.name "Travis CI"
   - git remote set-url --push origin "https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git"
   - git remote -v
-  - git checkout -b version-branch
+  - git checkout -f -b version-branch
   - npm version patch -m "bump version [skip ci]"
   - git push origin version-branch:master
 cache:
