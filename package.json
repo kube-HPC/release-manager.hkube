@@ -1,6 +1,6 @@
 {
   "name": "release-manager.hkube",
-  "version": "1.0.211",
+  "version": "1.0.212",
   "description": "handles system wide versions and releases to cluster",
   "main": "index.js",
   "scripts": {
