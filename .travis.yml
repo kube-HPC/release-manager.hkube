@@ -18,6 +18,8 @@ cache:
   directories:
   - node_modules
 script:
+  - REQUIRED_VERSION=$(git describe --abbrev=0 --tags); REQUIRED_VERSION=${REQUIRED_VERSION%.*}; echo $REQUIRED_VERSION
+  - export REQUIRED_VERSION
   - node get-versions.js
 before_success:
  
