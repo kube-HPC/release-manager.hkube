@@ -13,6 +13,17 @@ const CORE_TOPIC = 'hkube-core'
 const COMMON_TOPIC = 'hkube-common'
 const RELEASE_MANAGER_REPO = 'release-manager'
 
+const paginationHelper = async (github, method, options) => {
+    let response = await method({ ...options, per_page: 200 });
+    let { data } = response;
+    while (github.hasNextPage(response)) {
+        response = await github.getNextPage(response, { 'user-agent': HKUBE });
+        data = data.concat(response.data);
+    }
+    return data;
+
+}
+
 const main = async () => {
     try {
         const github = new GitHubApi({
@@ -28,10 +39,13 @@ const main = async () => {
             })
 
         }
-        const reposRaw = await github.repos.getForOrg({
+        const reposRaw = await paginationHelper(github,github.repos.getForOrg,{
             org: 'Kube-HPC'
         });
-        const repos = reposRaw.data.map(r => {
+        // const reposRaw = await github.repos.getForOrg({
+        //     org: 'Kube-HPC'
+        // });
+        const repos = reposRaw.map(r => {
             return {
                 name: r.name,
                 full_name: r.full_name,
@@ -45,7 +59,8 @@ const main = async () => {
             try {
                 const tags = await github.repos.getTags({ owner: HKUBE, repo: repo.name })
                 const tagNames = tags.data.map(t => ({
-                    name: t.name
+                    name: t.name,
+                    sha: t.commit.sha
                 })).filter(t => t.name.startsWith(requiredVersion));
                 const sorted = tagNames.sort((a, b) => {
                     const aToCompare = parseFloat(a.name.replace(requiredVersion + '.', ''));
@@ -57,7 +72,7 @@ const main = async () => {
                     console.error(`project ${repo.name} has no tags of version ${requiredVersion}`)
                     return ({ project: repo.name, tag: 'none' });
                 }
-                return ({ project: repo.name, tag: versionTag.name });
+                return ({ project: repo.name, tag: versionTag.name, sha: versionTag.sha  });
 
             }
             catch (e) {

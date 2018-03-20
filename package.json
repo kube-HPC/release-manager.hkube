@@ -19,6 +19,7 @@
   "homepage": "https://github.com/kube-HPC/release-manager.hkube#readme",
   "dependencies": {
     "github": "^12.0.5",
-    "github-repositories": "^3.0.0"
+    "github-repositories": "^3.0.0",
+    "spawn-sync": "^1.0.15"
   }
 }
