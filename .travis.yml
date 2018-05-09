@@ -21,6 +21,7 @@ script:
   - REQUIRED_VERSION=$(git describe --abbrev=0 --tags); REQUIRED_VERSION=${REQUIRED_VERSION%.*}; echo $REQUIRED_VERSION
   - export REQUIRED_VERSION
   - node get-versions.js
+  - curl -X POST -H 'accept:application/json' -H "authorization:token ${TRAVIS_API_TOKEN}" -H 'content-type:application/json' -H 'travis-api-version:3' -d "{\"request\":{\"branch\":\"master\",\"message\":\"triggered by ${TRAVIS_REPO_SLUG}\"}}" "https://api.travis-ci.org/repo/kube-HPC%2Fcd-manager/requests"
 before_success:
  
 env:
