@@ -127,7 +127,7 @@ const main = async () => {
                 tag_name: packageVersion,
                 name: packageVersion,
                 // body: JSON.stringify(output, null, 2),
-                prerelease: true
+                // prerelease: true
             })
             const uploadRes = await github.repos.uploadAsset({
                 owner: HKUBE,
