@@ -1,7 +1,7 @@
 const repoList = require('./repos')
 const GitHubApi = require('github')
 const fs = require('fs');
-
+const jsyaml = require('js-yaml')
 const requiredVersion = process.env.REQUIRED_VERSION || 'v1.0';
 // const packageVersion = process.env.TRAVIS_BUILD_NUMBER ?
 //     requiredVersion + '.' + process.env.TRAVIS_BUILD_NUMBER :
@@ -89,6 +89,19 @@ const main = async () => {
         }
         fs.writeFileSync('version.json', JSON.stringify(output, null, 2))
         console.log(JSON.stringify(output, null, 2))
+        const yamlVersions = jsyaml.safeDump(versionsFiltered.reduce((acc,cur,i)=>{
+            const key = cur.project; // add this to change - to _ .replace(/-/g,'_')
+            acc[key]={
+                image:{
+                    tag: cur.tag
+                }
+            };
+            return acc;
+        },{
+            systemversion: packageVersion
+        }));
+        fs.writeFileSync('version.yaml', yamlVersions);
+
         const masterRef = await github.gitdata.getReference({
             owner: HKUBE,
             repo: RELEASE_MANAGER_REPO,
@@ -123,6 +136,14 @@ const main = async () => {
                 filePath: './version.json',
                 name: 'version.json',
                 label: 'Version Description'
+            })
+            const uploadResYaml = await github.repos.uploadAsset({
+                owner: HKUBE,
+                repo: RELEASE_MANAGER_REPO,
+                id: tagRefResponse.data.id,
+                filePath: './version.yaml',
+                name: 'version.yaml',
+                label: 'Version Description yaml'
             })
         }
     }
