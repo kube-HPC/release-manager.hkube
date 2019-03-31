@@ -20,7 +20,7 @@
   "dependencies": {
     "github": "^12.0.5",
     "github-repositories": "^3.0.0",
-    "js-yaml": "^3.12.0",
+    "js-yaml": "^3.13.0",
     "spawn-sync": "^1.0.15"
   }
 }
