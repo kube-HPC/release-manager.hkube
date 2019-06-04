@@ -8,6 +8,12 @@ if ([ "$TRAVIS_BRANCH" == "master" ] || [ ! -z "$TRAVIS_TAG" ]) && [ "$TRAVIS_PU
   git clone --single-branch --branch ${VERSION} --depth 1 https://github.com/kube-HPC/hkube.git ~/hkube
   cd ~/hkube
   npm i
+  if [ -z $VERSION ]
+  then
+    echo No Version. Defaulting to latest
+    export VERSION=$(git describe --abbrev=0 --tags)  
+  fi
+  echo using version ${VERSION}
   HKUBE_FOLDER=/home/travis/hkube ${DIR}/getVersions.js
 else
   echo "version skiped!"
