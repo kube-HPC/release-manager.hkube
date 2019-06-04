@@ -1,4 +1,3 @@
-sudo: required
 language: node_js
 node_js:
 - '10'
@@ -7,21 +6,14 @@ branches:
   - master
 install:
   - npm install
-  - git config --global user.email "travis@travis-ci.org"
-  - git config --global user.name "Travis CI"
-  - git remote set-url --push origin "https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git"
-  - git remote -v
-  - git checkout -f -b version-branch
-  - npm version patch -m "bump version [skip ci]"
-  - git push origin version-branch:master
-cache:
-  directories:
-  - node_modules
 script:
-  - REQUIRED_VERSION=$(git describe --abbrev=0 --tags); REQUIRED_VERSION=${REQUIRED_VERSION%.*}; echo $REQUIRED_VERSION
-  - export REQUIRED_VERSION
-  - node get-versions.js
-  - curl -X POST -H 'accept:application/json'  -H "authorization:token ${TRAVIS_API_TOKEN}" -H 'content-type:application/json' -H 'travis-api-version:3' -d "{\"request\":{\"branch\":\"master\",\"message\":\"triggered by ${TRAVIS_REPO_SLUG}\"}}" "https://api.travis-ci.org/repo/kube-HPC%2Fhelm/requests"
+  - ./scripts/version.sh
+  - ./scripts/getVersions.js
+
+  # - REQUIRED_VERSION=$(git describe --abbrev=0 --tags); REQUIRED_VERSION=${REQUIRED_VERSION%.*}; echo $REQUIRED_VERSION
+  # - export REQUIRED_VERSION
+  # - node get-versions.js
+  # - curl -X POST -H 'accept:application/json'  -H "authorization:token ${TRAVIS_API_TOKEN}" -H 'content-type:application/json' -H 'travis-api-version:3' -d "{\"request\":{\"branch\":\"master\",\"message\":\"triggered by ${TRAVIS_REPO_SLUG}\"}}" "https://api.travis-ci.org/repo/kube-HPC%2Fhelm/requests"
 
 before_success:
  

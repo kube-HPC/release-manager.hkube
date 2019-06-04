@@ -60,3 +60,4 @@ typings/
 .env
 
 version.yaml
+.vscode
