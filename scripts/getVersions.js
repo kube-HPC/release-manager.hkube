@@ -29,7 +29,6 @@ const getCoreVersions = async () => {
         systemVersion: packageVersion,
         versions: versions
     }
-    // await writeFile('coreVersions.json', JSON.stringify(output, null, 2));
     return output;
 
 };

@@ -8,7 +8,7 @@ install:
   - npm install
 script:
   - ./scripts/version.sh
-  - ./scripts/getVersions.js
+  - HKUBE_FOLDER=/home/travis/hkube ./scripts/getVersions.js
 
   # - REQUIRED_VERSION=$(git describe --abbrev=0 --tags); REQUIRED_VERSION=${REQUIRED_VERSION%.*}; echo $REQUIRED_VERSION
   # - export REQUIRED_VERSION
