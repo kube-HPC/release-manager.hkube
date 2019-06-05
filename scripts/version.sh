@@ -7,7 +7,7 @@ if ([ "$TRAVIS_BRANCH" == "master" ] || [ ! -z "$TRAVIS_TAG" ]) && [ "$TRAVIS_PU
   git config --global user.name "Travis CI"
   export BRANCH=${VERSION:-master}
   echo cloning ${BRANCH} branch
-  git clone --single-branch --branch ${BRANCH} --depth 1 https://github.com/kube-HPC/hkube.git ~/hkube
+  git clone --single-branch --branch ${BRANCH} https://github.com/kube-HPC/hkube.git ~/hkube
   cd ~/hkube
   npm i
   if [ -z $VERSION ]
