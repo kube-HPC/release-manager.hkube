@@ -153,6 +153,7 @@ const main = async () => {
 
         const allVersions = {
             systemVersion: core.systemVersion,
+            fullSystemVersion: core.fullSystemVersion,
             versions: unionBy(core.versions, other, 'project')
         }
         await writeFile('version.json', JSON.stringify(allVersions, null, 2));
@@ -165,7 +166,8 @@ const main = async () => {
             };
             return acc;
         }, {
-                systemversion: packageVersion
+                systemversion: core.systemVersion,
+                fullSystemVersion: core.fullSystemVersion
             }));
         await writeFile('version.yaml', yamlVersions);
 
