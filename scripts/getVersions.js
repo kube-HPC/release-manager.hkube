@@ -9,6 +9,7 @@ const { promisify } = require('util');
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 const packageVersion = process.env.VERSION;
+const tagName = `${packageVersion}-${Date.now()}`
 
 const requiredVersion = process.env.REQUIRED_VERSION || 'v1.1';
 const HKUBE = 'Kube-HPC'
@@ -27,6 +28,7 @@ const getCoreVersions = async () => {
     }));
     const output = {
         systemVersion: packageVersion,
+        fullSystemVersion: tagName,
         versions: versions
     }
     return output;
@@ -109,7 +111,6 @@ const createRelease = async (github) => {
         repo: RELEASE_MANAGER_REPO,
         ref: 'heads/master'
     });
-    const tagName = `${packageVersion}-${Date.now()}`
     if (masterRef.data && masterRef.data.object) {
         const tagResponse = await github.git.createTag({
             owner: HKUBE,
