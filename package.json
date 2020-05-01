@@ -4,7 +4,9 @@
   "description": "handles system wide versions and releases to cluster",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+    "test": "echo \"Error: no test specified\"",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -25,9 +27,11 @@
     "lodash.pickby": "^4.6.0",
     "lodash.unionby": "^4.8.0",
     "request-promise-native": "^1.0.7",
-    "spawn-sync": "^1.0.15"
+    "spawn-sync": "^1.0.15",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "lerna": "^3.14.1"
-  }
+  },
+  "snyk": true
 }
