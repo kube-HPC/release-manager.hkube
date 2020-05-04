@@ -4,12 +4,14 @@ const syncSpawn = require('spawn-sync');
 const baseFolder = path.resolve(path.join(process.env.HOME, 'dev', 'hkube'));
 const main = async () => {
     const versions = JSON.parse(fs.readFileSync('./version.json'));
-    const branchName = 'release_v1_1_1085'
+    const branchName = 'release_v1_2_187'
     for (let v of versions.versions) {
         try {
             console.log(`${v.project}: ${v.tag}`);
             const repoFolder = path.join(baseFolder, v.project);
-            // await syncSpawn('grep', ['-Po', '\\"version\\": \\"\\K(.*)(?=\\",)', 'package.json'], { cwd: repoFolder ,stdio: 'inherit'})
+            await syncSpawn('grep', ['-Po', '\\"version\\": \\"\\K(.*)(?=\\",)', 'package.json'], { cwd: repoFolder ,stdio: 'inherit'})
+
+            
             // await syncSpawn('git',['status'],{cwd: repoFolder,stdio: 'inherit' })
 
             // await syncSpawn('git',['checkout',`${v.tag}`],{cwd: repoFolder,stdio: 'inherit' })
