@@ -7,8 +7,13 @@ branches:
 install:
   - npm install
 script:
-  - ./scripts/version.sh
-  - curl -X POST -H 'accept:application/json'  -H "authorization:token ${TRAVIS_API_TOKEN}" -H 'content-type:application/json' -H 'travis-api-version:3' -d "{\"request\":{\"branch\":\"master\",\"message\":\"triggered by ${TRAVIS_REPO_SLUG}\"}}" "https://api.travis-ci.org/repo/kube-HPC%2Fhelm/requests"
+  - |
+    if ([ "$TRAVIS_BRANCH" == "master" ] || [ ! -z "$TRAVIS_TAG" ]) && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+      ./scripts/version.sh
+      curl -X POST -H 'accept:application/json'  -H "authorization:token ${TRAVIS_API_TOKEN}" -H 'content-type:application/json' -H 'travis-api-version:3' -d "{\"request\":{\"branch\":\"master\",\"message\":\"triggered by ${TRAVIS_REPO_SLUG}\"}}" "https://api.travis-ci.org/repo/kube-HPC%2Fhelm/requests"
+    else
+      echo "version skipped!"
+    fi
   # - REQUIRED_VERSION=$(git describe --abbrev=0 --tags); REQUIRED_VERSION=${REQUIRED_VERSION%.*}; echo $REQUIRED_VERSION
   # - export REQUIRED_VERSION
   # - node get-versions.js
