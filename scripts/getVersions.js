@@ -11,7 +11,7 @@ const readFile = promisify(fs.readFile);
 const packageVersion = process.env.VERSION;
 const tagName = `${packageVersion}-${Date.now()}`
 
-const requiredVersion = process.env.REQUIRED_VERSION || 'v2.0';
+const requiredVersion = process.env.REQUIRED_VERSION || 'v2.1';
 const HKUBE = 'Kube-HPC'
 const HKUBE_REPO = 'hkube'
 const CORE_TOPIC = 'hkube-core'
